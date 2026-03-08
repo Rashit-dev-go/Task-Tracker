@@ -19,21 +19,21 @@ func initStorage(dataDir, dataFile string) error {
 		storage := TaskStorage{
 			Tasks: []Task{},
 		}
-		
+
 		data, err := json.MarshalIndent(storage, "", "  ")
 		if err != nil {
 			return fmt.Errorf("ошибка кодирования данных: %w", err)
 		}
-		
+
 		if err := os.WriteFile(dataFile, data, 0644); err != nil {
 			return fmt.Errorf("ошибка создания файла %s: %w", dataFile, err)
 		}
-		
+
 		fmt.Printf("✅ Хранилище инициализировано: %s\n", dataFile)
 	} else {
 		fmt.Printf("ℹ️  Хранилище уже существует: %s\n", dataFile)
 	}
-	
+
 	return nil
 }
 

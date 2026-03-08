@@ -37,8 +37,35 @@ clean:
 
 # Тестирование
 test:
-	@echo "🧪 Запуск тестов..."
+	@echo "🧪 Запуск всех тестов..."
 	@go test -v ./...
+
+# Тестирование с покрытием
+test-coverage:
+	@echo "📊 Запуск тестов с покрытием..."
+	@go test -v -coverprofile=coverage.out ./...
+	@go tool cover -html=coverage.out -o coverage.html
+	@echo "📈 Отчет покрытия: coverage.html"
+
+# Только P0 тесты (критические)
+test-p0:
+	@echo "🔥 Запуск P0 тестов..."
+	@go test -v -run "P0" ./...
+
+# P0 + P1 тесты
+test-core:
+	@echo "⚡ Запуск P0+P1 тестов..."
+	@go test -v -run "(P0|P1)" ./...
+
+# Performance тесты
+test-bench:
+	@echo "🚀 Запуск performance тестов..."
+	@go test -v -bench=. ./...
+
+# Тесты с детальной информацией
+test-verbose:
+	@echo "🔍 Детальный запуск тестов..."
+	@go test -v -race -cover ./...
 
 # Форматирование кода
 fmt:
@@ -72,7 +99,12 @@ help:
 	@echo "  make run      - Запуск приложения"
 	@echo "  make install  - Установка в систему"
 	@echo "  make clean    - Очистка"
-	@echo "  make test     - Запуск тестов"
+	@echo "  make test         - Запуск всех тестов"
+	@echo "  make test-coverage- Тесты с покрытием кода"
+	@echo "  make test-p0      - Только P0 (критические) тесты"
+	@echo "  make test-core    - P0+P1 тесты"
+	@echo "  make test-bench   - Performance тесты"
+	@echo "  make test-verbose - Детальный запуск тестов"
 	@echo "  make fmt      - Форматирование кода"
 	@echo "  make vet      - Проверка кода"
 	@echo "  make init     - Инициализация хранилища"
